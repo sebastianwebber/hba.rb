@@ -1,21 +1,26 @@
 require_relative "rules"
 
 class Hba
+
+    def parse_local line
+        HbaRule.new :conn_type => line[0], :db_name => line[1], :user_name => line[2], :auth_type => line[3]
+    end
+    def parse_host line
+        if line.length == 5
+            address = line[3].split("/")
+            HbaRule.new :conn_type => line[0], :db_name => line[1], :user_name => line[2], :ip_mask => address[0], :net_mask => address[1], :auth_type => line[4]
+        else 
+            HbaRule.new :conn_type => line[0], :db_name => line[1], :user_name => line[2], :ip_mask => line[3], :net_mask => line[4], :auth_type => line[5]
+        end
+    end
+    
+
     def parse_line line_content
         line = line_content.split
-        rule = HbaRule.new
-        rule.conn_type = line[0]
-        rule.db_name = line[1]
-        rule.user_name = line[2]
-
-        if rule.conn_type == "local"
-            rule.auth_type = line[3]
-        elsif line.length == 5
-
-            address = line[3].split("/")
-            rule.ip_addr = address[0]
-            rule.net_mask = address[1]
-            rule.auth_type = line[4]
+        if line[0] == "local"
+            rule =  parse_local line
+        else 
+            rule = parse_host line
         end
 
         rule

@@ -34,6 +34,8 @@ class Hba
             rule = parse_host line
         end
 
+        puts rule.inspect
+
         rule
     end
 

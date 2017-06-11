@@ -7,22 +7,17 @@ class Hba
     end
 
     def parse_host line
-        if line.length == 5
+        if line[3].include? "/"
             address = line[3].split("/")
-            HbaRule.new :conn_type => line[0], 
-                        :db_name => line[1], 
-                        :user_name => line[2], 
-                        :ip_mask => address[0], 
-                        :net_mask => address[1], 
-                        :auth_type => line[4]
-        else 
-            HbaRule.new :conn_type => line[0], 
-                        :db_name => line[1], 
-                        :user_name => line[2], 
-                        :ip_mask => line[3], 
-                        :net_mask => line[4], 
-                        :auth_type => line[5]
+            line[3] = address[0]
+            line.insert(4,address[1])
         end
+        HbaRule.new :conn_type => line[0], 
+                    :db_name => line[1], 
+                    :user_name => line[2], 
+                    :ip_mask => line[3], 
+                    :net_mask => line[4], 
+                    :auth_type => line[5]
     end
     
 

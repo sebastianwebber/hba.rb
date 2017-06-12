@@ -47,7 +47,7 @@ class Hba
     end
     
     def process_file file_name
-        puts "processing #{file_name}"
+        # puts "processing #{file_name}"
         rules = read_file file_name
 
         rules.each do |rule|

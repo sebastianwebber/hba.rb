@@ -13,5 +13,13 @@ class HbaRule
             instance_variable_set("@#{k}", v) unless v.nil?
         end
     end
-    
+
+    def ==(other)
+        other.class == self.class && other.state == self.state
+    end
+
+    def state
+        self.instance_variables.map { |variable| self.instance_variable_get variable }
+    end
+
 end

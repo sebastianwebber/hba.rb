@@ -29,26 +29,29 @@ class Hba
     def parse_line line_no, line_content
         line = line_content.split
         if line[0] == "local"
-            rule = parse_local line_no, line
+            parse_local line_no, line
         else 
-            rule = parse_host line_no, line
+            parse_host line_no, line
         end
-
-        puts rule.inspect
-
-        rule
     end
 
     def read_file file_name
         line_no = 0
+        rule_list = []
         File.read(file_name).each_line do |line|
             line_no += 1
-            puts parse_line(line_no, line) unless line.strip.start_with?("#") or line.strip == ""
+            rule_list << parse_line(line_no, line) unless line.strip.start_with?("#") or line.strip == ""
         end
+
+        rule_list
     end
     
     def process_file file_name
         puts "processing #{file_name}"
-        read_file file_name
+        rules = read_file file_name
+
+        rules.each do |rule|
+            puts rule.inspect
+        end
     end
 end

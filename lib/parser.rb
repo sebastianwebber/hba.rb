@@ -2,7 +2,7 @@ require_relative "rules"
 require 'terminal-table'
 
 
-class Hba
+class HbaParser
 
     def join_comments pos, line
         line[pos..(line.length-1)].join(" ") unless line[pos].nil?

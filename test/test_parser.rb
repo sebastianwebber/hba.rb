@@ -1,32 +1,32 @@
 require "test/unit"
-require_relative "../lib/hba"
+require_relative "../lib/parser"
 require_relative "../lib/rules"
 
 class TestHba < Test::Unit::TestCase
     
     def test_wrongfile
-        assert_raise( Errno::ENOENT ) { Hba.new.process_file('wrong/path/to/hba.conf') }
+        assert_raise( Errno::ENOENT ) { HbaParser.new.process_file('wrong/path/to/hba.conf') }
     end
 
     def test_okfile
-        assert_raise( Errno::ENOENT ) { Hba.new.process_file('samples/pg_hba.conf') }
+        assert_raise( Errno::ENOENT ) { HbaParser.new.process_file('samples/pg_hba.conf') }
     end
 
     def test_parse_local
         test_rule = "local   all             all                                     trust ### coment test ok".split
-        assert_instance_of HbaRule, Hba.new.parse_local(2, test_rule) 
+        assert_instance_of HbaRule, HbaParser.new.parse_local(2, test_rule) 
         assert_equal HbaRule.new(:line_no => 2,
                         :conn_type => "local", 
                         :db_name => "all", 
                         :user_name => "all", 
                         :comment => "coment test ok",
                         :auth_type => "trust"), 
-                    Hba.new.parse_local(2, test_rule)
+                    HbaParser.new.parse_local(2, test_rule)
     end
 
     def test_parse_host
         test_rule = "hostssl    dbname             seba             192.168.0.0/24            reject ### supercomment".split
-        assert_instance_of HbaRule, Hba.new.parse_host(2, test_rule)
+        assert_instance_of HbaRule, HbaParser.new.parse_host(2, test_rule)
 
         assert_equal HbaRule.new(:line_no => 2,
                         :conn_type => "hostssl", 
@@ -36,7 +36,7 @@ class TestHba < Test::Unit::TestCase
                         :net_mask => "24", 
                         :comment => "supercomment",
                         :auth_type => "reject"),
-                    Hba.new.parse_host(2, test_rule)
+                    HbaParser.new.parse_host(2, test_rule)
     end
     
 end

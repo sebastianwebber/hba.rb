@@ -4,7 +4,7 @@ This project implement a CRUD interface to manage the `pg_hba.conf` file to avoi
 
 # example output
 
-Running `ruby bin/run.rb sample_files/pg_hba.conf` in the command line, it shows:
+Running `ruby bin/run.rb show -f sample_files/pg_hba.conf` in the command line, it shows:
 
 ```
 +------+---------+----------+------+-------------+-----------------+--------+--------------+

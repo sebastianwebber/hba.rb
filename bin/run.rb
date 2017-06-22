@@ -1,5 +1,5 @@
-require_relative '../lib/HbaParser'
+require_relative '../lib/ui'
 
-cmd = HbaParser.new
+cmd = HbaUI.new
 raise("Missing filename!") unless ARGV.length >= 1
-cmd.process_file ARGV[0]
+cmd.display_file ARGV[0]

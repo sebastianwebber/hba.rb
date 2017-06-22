@@ -13,15 +13,16 @@ class HbaRule
             instance_variable_set("@#{k}", v) unless v.nil?
         end
 
-        @conn_type ||= "local"
-        @user_name ||= "all"
-        @db_name ||= "all"
-        @auth_type ||= "md5"
+        # @conn_type ||= "local"
+        # @user_name ||= "all"
+        # @db_name ||= "all"
+        # @auth_type ||= "md5"
+        # @comment ||= "-"
     end
 
     def to_s
-        "#{@line_no}:#{@conn_type}\t#{@db_name}\t#{@user_name}\t#{@auth_type}"
-        "#{@line_no}:#{@conn_type}\t#{@db_name}\t#{@user_name}\t#{@ip_addr}/#{@net_mask}\t#{@auth_type}" unless [ 'host', 'hostssl'].include?(:conn_type)
+        "#{@line_no}:#{@conn_type}\t#{@db_name}\t#{@user_name}\t#{@auth_type}" if self.conn_type == "local"
+        "#{@line_no}:#{@conn_type}\t#{@db_name}\t#{@user_name}\t#{@ip_addr}/#{@net_mask}\t#{@auth_type}"
     end
 
     def ==(other)

@@ -19,6 +19,7 @@ class TestHba < Test::Unit::TestCase
                         :conn_type => "local", 
                         :db_name => "all", 
                         :user_name => "all", 
+                        :comment => "coment test ok",
                         :auth_type => "trust"), 
                     Hba.new.parse_local(2, test_rule)
     end
@@ -31,8 +32,9 @@ class TestHba < Test::Unit::TestCase
                         :conn_type => "hostssl", 
                         :db_name => "dbname", 
                         :user_name => "seba", 
-                        :ip_mask => "192.168.0.0", 
+                        :ip_addr => "192.168.0.0", 
                         :net_mask => "24", 
+                        :comment => "supercomment",
                         :auth_type => "reject"),
                     Hba.new.parse_host(2, test_rule)
     end

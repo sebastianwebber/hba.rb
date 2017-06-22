@@ -1,13 +1,20 @@
 require_relative "rules"
+require 'terminal-table'
+
 
 class Hba
+
+    def join_comments pos, line
+        line[pos..(line.length-1)].join(" ") unless line[pos].nil?
+    end 
 
     def parse_local line_no, line
         HbaRule.new :line_no => line_no,
                     :conn_type => line[0], 
                     :db_name => line[1], 
                     :user_name => line[2], 
-                    :auth_type => line[3]
+                    :auth_type => line[3], 
+                    :comment => join_comments(5, line)
     end
 
     def parse_host line_no, line
@@ -20,9 +27,10 @@ class Hba
                     :conn_type => line[0], 
                     :db_name => line[1], 
                     :user_name => line[2], 
-                    :ip_mask => line[3], 
+                    :ip_addr => line[3], 
                     :net_mask => line[4], 
-                    :auth_type => line[5]
+                    :auth_type => line[5],
+                    :comment => join_comments(7, line)
     end
     
 
@@ -45,13 +53,39 @@ class Hba
 
         rule_list
     end
-    
+
+
+    ### for dev purposes only
     def process_file file_name
-        # puts "processing #{file_name}"
         rules = read_file file_name
 
-        rules.each do |rule|
-            puts rule.inspect
+        table = Terminal::Table.new do |t|
+            t.headings = ['line', 'type', 'database', 'user', 'ip addr', 'mask', 'auth', 'comment']
+            # t.style = { :width => 100}
+
+            rules.each do |rule|
+                # puts rule.to_s
+                t.add_row [
+                    coalesce(rule.line_no),
+                    coalesce(rule.conn_type),
+                    coalesce(rule.db_name),
+                    coalesce(rule.user_name),
+                    coalesce(rule.ip_addr),
+                    coalesce(rule.net_mask),
+                    coalesce(rule.auth_type),
+                    coalesce(rule.comment)
+                ]
+            end
+        end
+
+        puts table
+    end
+
+    def coalesce value, new_default = "~"
+        if value.nil?
+            new_default
+        else
+            value
         end
     end
 end

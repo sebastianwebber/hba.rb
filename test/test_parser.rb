@@ -2,16 +2,7 @@ require "test/unit"
 require_relative "../lib/parser"
 require_relative "../lib/rules"
 
-class TestHba < Test::Unit::TestCase
-    
-    def test_wrongfile
-        assert_raise( Errno::ENOENT ) { HbaParser.new.process_file('wrong/path/to/hba.conf') }
-    end
-
-    def test_okfile
-        assert_raise( Errno::ENOENT ) { HbaParser.new.process_file('samples/pg_hba.conf') }
-    end
-
+class TestHbaParser < Test::Unit::TestCase
     def test_parse_local
         test_rule = "local   all             all                                     trust ### coment test ok".split
         assert_instance_of HbaRule, HbaParser.new.parse_local(2, test_rule) 

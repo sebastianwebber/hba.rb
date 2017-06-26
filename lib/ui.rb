@@ -15,9 +15,9 @@ class HbaUI
                 t.add_row [
                     coalesce(rule.line_no),
                     coalesce(rule.conn_type),
-                    coalesce(rule.db_name),
-                    coalesce(rule.user_name),
-                    coalesce(rule.ip_addr),
+                    coalesce(rule.db_name).split(",").join(",\n"),
+                    coalesce(rule.user_name).split(",").join(",\n"),
+                    coalesce(rule.ip_addr).split(",").join(",\n"),
                     coalesce(rule.net_mask),
                     coalesce(rule.auth_type),
                     coalesce(rule.comment)

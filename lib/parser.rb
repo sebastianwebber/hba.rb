@@ -48,7 +48,7 @@ class HbaParser
         rule_list = []
         File.read(file_name).each_line do |line|
             line_no += 1
-            rule_list << parse_line(line_no, line) unless line.strip.start_with?("#") or line.strip == ""
+            rule_list << parse_line(line_no, line) unless line.strip.start_with?("#") or line.strip.empty?
         end
 
         rule_list
